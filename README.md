@@ -1,0 +1,2 @@
+# eqSolver
+Simple equation solver
