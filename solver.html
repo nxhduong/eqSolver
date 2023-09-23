@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+<title>Solve equations</title>
+</head>
+<style>
+
+</style>
+<body>
+    <h1>Solve equations</h1>
+    <input type="text" placeholder="Eqn = 0" id="eqn"><p> Example: -2*(x**3)+7*(x**2)+6*x-21</p><br>
+    <input type="text" placeholder="From (default: -10^50)" id="start">
+    <input type="text" placeholder="To (default: 10^49)" id="end"><br>
+    <input type="text" placeholder="Loop (default: 1000)" id="times"><br>
+    <button id="submit" onclick="solve()">Submit</button>
+    <h1 id="res"></h1>
+</body>
+<script>
+function solve(){
+    var eq=document.getElementById("eqn").value;
+    var x=Number(document.getElementById("start").value);
+    var y=Number(document.getElementById("end").value);
+    var t=Number(document.getElementById("times").value);
+    if (document.getElementById("times").value=='') t=1000;
+    if (document.getElementById("start").value=='') x=-(10**50);
+    if (document.getElementById("end").value=='') y=10**49;
+    var mean = (x+y)/2;
+    for (var i=0;i<t;i++){
+        let z = Number(eval(eq.replaceAll(/x/gi,'('+mean+')')));
+        if (z==0) break;
+        var fa = Number(eval(eq.replaceAll(/x/gi,'('+x+')')));
+        var fb = Number(eval(eq.replaceAll(/x/gi,'('+y+')')));
+        console.log(x,y,z,mean,fa,fb);
+        if ((fa>0 && z<0) || (fa<0 && z>0)){
+            y=mean;
+            mean = (x+mean)/2;
+        }
+        if (((fb>0 && z<0) || (fb<0 && z>0)) && !((fa>0 && z<0) || (fa<0 && z>0))){
+            x=mean;
+            mean = (y+mean)/2;
+        }
+    }
+    document.getElementById("res").innerHTML='Final result: '+mean;
+}
+</script>
